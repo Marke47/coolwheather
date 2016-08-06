@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.coolweather.app.R;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -73,6 +74,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         currentDateText.setText(prefs.getString("current_date", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     private void queryWeather(String countyName) {
@@ -114,7 +117,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.refresh_weather:
                 publishText.setText("同步中...");
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                String cityName = prefs.getString("city_name","");
+                String cityName = prefs.getString("city_name", "");
                 if (!TextUtils.isEmpty(cityName)) {
                     queryWeather(cityName);
                 }
